@@ -1,0 +1,23 @@
+#!/bin/bash                                                                                                                                                                                                         
+                                                                                                                                                                                                                     
+ ACCESS_TOKEN="<your_access_token>"                                                                                                                                                                                  
+ GROUP_ID="<group_id>"                                                                                                                                                                                               
+                                                                                                                                                                                                                     
+ # Get the list of projects in the group                                                                                                                                                                             
+ projects=$(curl --header "PRIVATE-TOKEN: $ACCESS_TOKEN" "https://gitlab.example.com/api/v4/groups/$GROUP_ID/projects" | jq -r '.[].id')                                                                             
+                                                                                                                                                                                                                     
+ # Loop through each project and get the protected tags                                                                                                                                                              
+ for project_id in $projects                                                                                                                                                                                         
+ do                                                                                                                                                                                                                  
+     echo "Project ID: $project_id"                                                                                                                                                                                  
+     protected_tags=$(curl --header "PRIVATE-TOKEN: $ACCESS_TOKEN" "https://gitlab.example.com/api/v4/projects/$project_id/protected_tags" | jq -r '.[].name')                                                       
+                                                                                                                                                                                                                     
+     if [ -z "$protected_tags" ]; then                                                                                                                                                                               
+         echo "No protected tags found for this project."                                                                                                                                                            
+     else                                                                                                                                                                                                            
+         echo "Protected Tags:"                                                                                                                                                                                      
+         echo "$protected_tags"                                                                                                                                                                                      
+     fi                                                                                                                                                                                                              
+                                                                                                                                                                                                                     
+     echo "--------------------------------------"                                                                                                                                                                   
+ done
