@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# aws ec2 describe-instances --query 'Reservations[*].Instances[*][InstanceId,Tags][?Key==\'Name\'].Value[0]' --filters "Name=ip-address,Values=$ip" --output text
+
 ips=$(cat ips.txt)
 
 for ip in $ips; do
